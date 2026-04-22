@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ornella Ratsimbazafy — Fullstack Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --accent: #c8f542;
+    --accent2: #7b5cf0;
+    --text: #e8e6f0;
+    --muted: #6b6880;
+    --border: #222230;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-trail {
+    width: 32px; height: 32px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: left 0.12s ease, top 0.12s ease, transform 0.3s ease;
+    opacity: 0.4;
+  }
+  .cursor.hover { transform: scale(3); opacity: 0.6; }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0.35;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 48px;
+    background: linear-gradient(to bottom, rgba(10,10,15,0.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    padding: 160px 48px 80px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 2;
+  }
+
+  .hero-tag {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-tag::before {
+    content: ''; width: 32px; height: 1px; background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    line-height: 1.0;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-desc {
+    max-width: 460px;
+    color: #9997aa;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+  }
+
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0f;
+    padding: 14px 28px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(200,245,66,0.25); }
+
+  .btn-outline {
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 28px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .hero-bg-gfx {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 60% 50%, rgba(123,92,240,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 20%, rgba(200,245,66,0.08) 0%, transparent 60%);
+  }
+
+  .hero-code-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 32px;
+    width: 380px;
+    position: relative;
+    z-index: 2;
+    animation: floatCard 4s ease-in-out infinite;
+  }
+  @keyframes floatCard {
+    0%, 100% { transform: translateY(0px) rotate(-1deg); }
+    50% { transform: translateY(-12px) rotate(0.5deg); }
+  }
+
+  .code-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+  .code-filename { font-size: 11px; color: var(--muted); margin-left: 8px; }
+
+  .code-line { display: flex; gap: 16px; margin-bottom: 6px; line-height: 1.6; }
+  .ln { color: #333344; font-size: 11px; min-width: 16px; }
+  .kw { color: #7b5cf0; }
+  .fn { color: var(--accent); }
+  .str { color: #f0a05a; }
+  .cm { color: #444456; font-style: italic; }
+  .punc { color: #665599; }
+
+  /* Floating badges */
+  .hero-badge {
+    position: absolute;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 10px 16px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    animation: floatBadge 3s ease-in-out infinite;
+  }
+  .hero-badge strong { color: var(--accent); }
+  .badge-1 { top: 20%; right: 8%; animation-delay: 0s; }
+  .badge-2 { bottom: 25%; left: 5%; animation-delay: 1.5s; }
+  @keyframes floatBadge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-hint {
+    position: absolute; bottom: 40px; left: 48px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); z-index: 2;
+  }
+  .scroll-line {
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+  }
+
+  /* SECTIONS */
+  section { padding: 120px 48px; }
+
+  .section-label {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 64px;
+    letter-spacing: -0.02em;
+  }
+  h2 em { font-style: italic; color: var(--accent); }
+
+  /* SKILLS */
+  #skills { background: var(--surface); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .skill-card {
+    background: var(--surface);
+    padding: 36px 32px;
+    transition: background 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .skill-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .skill-card:hover { background: var(--surface2); }
+  .skill-card:hover::after { transform: scaleX(1); }
+
+  .skill-icon {
+    font-size: 28px; margin-bottom: 16px;
+    display: block;
+  }
+  .skill-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 15px;
+    color: var(--text); margin-bottom: 12px;
+  }
+  .skill-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 16px;
+  }
+  .tag {
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 1px;
+  }
+  .tag.accent { border-color: rgba(200,245,66,0.3); color: var(--accent); background: rgba(200,245,66,0.05); }
+
+  /* EXPERIENCE */
+  #experience { position: relative; }
+
+  .exp-grid { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+
+  .exp-item {
+    background: var(--bg);
+    display: grid; grid-template-columns: 200px 1fr;
+    gap: 32px;
+    padding: 40px 36px;
+    transition: background 0.3s;
+  }
+  .exp-item:hover { background: var(--surface); }
+
+  .exp-meta { padding-top: 4px; }
+  .exp-date {
+    font-size: 11px; letter-spacing: 0.08em;
+    color: var(--accent); margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .exp-company {
+    font-size: 12px; color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .exp-content {}
+  .exp-role {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 17px;
+    color: var(--text); margin-bottom: 12px;
+  }
+  .exp-desc {
+    color: #8a8899; font-size: 13px; line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .exp-techs { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* PROJECTS */
+  #projects { background: var(--surface); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+  }
+
+  .project-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 36px 32px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: none;
+  }
+  .project-card:hover {
+    border-color: rgba(200,245,66,0.3);
+    transform: translateY(-4px);
+  }
+  .project-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, var(--accent), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .project-card:hover::before { opacity: 1; }
+
+  .project-num {
+    font-size: 11px; letter-spacing: 0.15em;
+    color: var(--accent); margin-bottom: 20px;
+  }
+  .project-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 12px; line-height: 1.3;
+  }
+  .project-desc { color: #8a8899; font-size: 13px; line-height: 1.7; margin-bottom: 20px; }
+  .project-arrow {
+    position: absolute; top: 36px; right: 32px;
+    font-size: 20px; color: var(--border);
+    transition: color 0.2s, transform 0.2s;
+  }
+  .project-card:hover .project-arrow { color: var(--accent); transform: translate(4px, -4px); }
+
+  /* EDUCATION */
+  #education {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+  }
+
+  .edu-left {
+    padding: 120px 48px;
+    background: var(--bg);
+  }
+  .edu-right {
+    padding: 120px 48px;
+    background: var(--surface);
+  }
+
+  .edu-items { display: flex; flex-direction: column; gap: 32px; }
+
+  .edu-item {
+    border-left: 2px solid var(--border);
+    padding-left: 24px;
+    transition: border-color 0.3s;
+  }
+  .edu-item:hover { border-color: var(--accent); }
+  .edu-year { font-size: 11px; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 6px; }
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 15px; margin-bottom: 4px;
+  }
+  .edu-school { font-size: 12px; color: var(--muted); }
+
+  .lang-items { display: flex; flex-direction: column; gap: 24px; margin-top: 0; }
+  .lang-item {}
+  .lang-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 15px;
+    margin-bottom: 8px;
+  }
+  .lang-bar-bg {
+    height: 3px; background: var(--border); border-radius: 0;
+    position: relative; overflow: hidden;
+  }
+  .lang-bar {
+    height: 100%; background: var(--accent);
+    border-radius: 0;
+    transition: width 1.2s cubic-bezier(.4,0,.2,1);
+  }
+  .lang-level { font-size: 11px; color: var(--muted); margin-top: 6px; letter-spacing: 0.05em; }
+
+  /* CONTACT */
+  #contact {
+    text-align: center;
+    padding: 120px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  #contact::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(123,92,240,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .contact-email {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 3vw, 36px);
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 48px;
+    display: block;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-email:hover { color: var(--accent); }
+
+  .social-links { display: flex; justify-content: center; gap: 24px; margin-top: 48px; }
+  .social-link {
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none; color: var(--muted);
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 12px 20px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .social-link:hover { color: var(--accent); border-color: rgba(200,245,66,0.4); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.06em;
+  }
+  footer span { color: var(--accent); }
+
+  /* ANIMATIONS */
+  .reveal {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    #hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 120px 24px 80px; }
+    section { padding: 80px 24px; }
+    .exp-item { grid-template-columns: 1fr; gap: 16px; }
+    #education { grid-template-columns: 1fr; }
+    .edu-left, .edu-right { padding: 60px 24px; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">OR.</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#experience">Expériences</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#education">Formation</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Disponible pour opportunités — Madagascar &amp; Remote</div>
+    <h1>Ornella<br><em>Ratsimbazafy</em></h1>
+    <p class="hero-subtitle">Fullstack Software Engineer</p>
+    <p class="hero-desc">
+      Ingénieure logiciel avec un Master en Génie Logiciel. Je conçois et développe des applications web modernes de bout en bout — du backend robuste jusqu'aux interfaces soignées.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Me contacter</a>
+      <a href="#experience" class="btn-outline">Voir mes expériences</a>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg-gfx"></div>
+    <div class="hero-code-card">
+      <div class="code-header">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="code-filename">ornella.profile.ts</span>
+      </div>
+      <div class="code-line"><span class="ln">1</span><span class="cm">// Software Engineer</span></div>
+      <div class="code-line"><span class="ln">2</span></div>
+      <div class="code-line"><span class="ln">3</span><span class="kw">const</span> <span style="color:#e8e6f0">ornella</span> <span class="punc">=</span> <span class="punc">{</span></div>
+      <div class="code-line"><span class="ln">4</span>&nbsp;&nbsp;<span style="color:#c8a0f0">role</span><span class="punc">:</span> <span class="str">"Fullstack Dev"</span><span class="punc">,</span></div>
+      <div class="code-line"><span class="ln">5</span>&nbsp;&nbsp;<span style="color:#c8a0f0">level</span><span class="punc">:</span> <span class="str">"Master II"</span><span class="punc">,</span></div>
+      <div class="code-line"><span class="ln">6</span>&nbsp;&nbsp;<span style="color:#c8a0f0">stack</span><span class="punc">:</span> <span class="punc">[</span></div>
+      <div class="code-line"><span class="ln">7</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"React"</span><span class="punc">,</span> <span class="str">"Next.js"</span><span class="punc">,</span></div>
+      <div class="code-line"><span class="ln">8</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Node.js"</span><span class="punc">,</span> <span class="str">"Laravel"</span><span class="punc">,</span></div>
+      <div class="code-line"><span class="ln">9</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Python"</span><span class="punc">,</span> <span class="str">"FastAPI"</span></div>
+      <div class="code-line"><span class="ln">10</span>&nbsp;&nbsp;<span class="punc">],</span></div>
+      <div class="code-line"><span class="ln">11</span>&nbsp;&nbsp;<span style="color:#c8a0f0">open</span><span class="punc">:</span> <span class="fn">true</span> <span class="cm">// hiring!</span></div>
+      <div class="code-line"><span class="ln">12</span><span class="punc">}</span></div>
+    </div>
+    <div class="hero-badge badge-1">⚡ <strong>4</strong> expériences pro</div>
+    <div class="hero-badge badge-2">🎓 <strong>Master II</strong> ENI</div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Compétences</div>
+  <h2>Ce que je <em>maîtrise</em></h2>
+  <div class="skills-grid reveal">
+    <div class="skill-card">
+      <span class="skill-icon">⚛️</span>
+      <div class="skill-title">Frontend</div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">Interfaces modernes, responsives et performantes avec les derniers outils du marché.</p>
+      <div class="skill-tags">
+        <span class="tag accent">React.js</span>
+        <span class="tag accent">Next.js</span>
+        <span class="tag">React Native</span>
+        <span class="tag">Tailwind CSS</span>
+        <span class="tag">HTML5 / CSS3</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🖥️</span>
+      <div class="skill-title">Backend</div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">APIs robustes, architectures scalables et logique métier solide.</p>
+      <div class="skill-tags">
+        <span class="tag accent">Node.js</span>
+        <span class="tag accent">Express.js</span>
+        <span class="tag">Laravel</span>
+        <span class="tag">FastAPI</span>
+        <span class="tag">ERPNext/Frappe</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🗄️</span>
+      <div class="skill-title">Bases de données</div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">Conception et optimisation de bases relationnelles et NoSQL.</p>
+      <div class="skill-tags">
+        <span class="tag accent">PostgreSQL</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">Firebase</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🧪</span>
+      <div class="skill-title">Tests &amp; QA</div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">Automatisation des tests, assurance qualité et intégration continue.</p>
+      <div class="skill-tags">
+        <span class="tag accent">Cypress</span>
+        <span class="tag">Grafana</span>
+        <span class="tag">GitLab CI</span>
+        <span class="tag">n8n</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🛠️</span>
+      <div class="skill-title">Outils &amp; Méthodes</div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">Workflow collaboratif, conception et gestion de projet.</p>
+      <div class="skill-tags">
+        <span class="tag accent">Git / GitHub</span>
+        <span class="tag">GitLab</span>
+        <span class="tag">Figma</span>
+        <span class="tag">UML</span>
+        <span class="tag">Mérise</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-icon">🤖</span>
+      <div class="skill-title">Langages</div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">Polyvalence technique sur les langages les plus demandés.</p>
+      <div class="skill-tags">
+        <span class="tag accent">JavaScript</span>
+        <span class="tag accent">Python</span>
+        <span class="tag">PHP</span>
+        <span class="tag">TypeScript</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Parcours</div>
+  <h2>Mes <em>expériences</em></h2>
+  <div class="exp-grid reveal">
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-date">Sept 2025 — Mars 2026</div>
+        <div class="exp-company">Manao Logiciel<br>Fianarantsoa</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Développeuse Web — QA &amp; Tests Automatisés</div>
+        <p class="exp-desc">Développement d'une suite de tests automatisés complète, mise en place de pipelines CI/CD, participation aux processus d'assurance qualité et collaboration technique avec l'équipe.</p>
+        <div class="exp-techs">
+          <span class="tag accent">Cypress</span><span class="tag">GitLab</span><span class="tag">Grafana</span><span class="tag">n8n</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-date">Juil — Oct 2025</div>
+        <div class="exp-company">Smart Print &amp; Design<br>Antananarivo</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Développeuse Web Frontend</div>
+        <p class="exp-desc">Conception d'une application d'optimisation de placement grand format intégrant des algorithmes de Machine Learning pour réduire le gaspillage de papier, avec interface React.js et API FastAPI.</p>
+        <div class="exp-techs">
+          <span class="tag accent">React.js</span><span class="tag accent">Next.js</span><span class="tag">FastAPI</span><span class="tag">Machine Learning</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-date">Sept — Nov 2024</div>
+        <div class="exp-company">Software Overseas Academy<br>Antananarivo</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Développeuse Web ERP</div>
+        <p class="exp-desc">Développement et personnalisation d'applications ERP métier sur la plateforme ERPNext/Frappe avec JavaScript et Python.</p>
+        <div class="exp-techs">
+          <span class="tag accent">ERPNext</span><span class="tag">Frappe</span><span class="tag">JavaScript</span><span class="tag">Python</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-date">Sept — Nov 2023</div>
+        <div class="exp-company">Althea<br>Antananarivo</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Développeuse Web Frontend</div>
+        <p class="exp-desc">Développement d'une application de gestion des recrutements avec une interface React.js connectée à une API backend Node.js/Express.</p>
+        <div class="exp-techs">
+          <span class="tag accent">React.js</span><span class="tag">Node.js</span><span class="tag">Express.js</span><span class="tag">REST API</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Réalisations</div>
+  <h2>Projets <em>notables</em></h2>
+  <div class="projects-grid reveal">
+    <div class="project-card">
+      <div class="project-num">01</div>
+      <div class="project-title">Optimisation placement grand format</div>
+      <p class="project-desc">Application intelligente pour optimiser la découpe et le placement d'éléments sur supports grand format, réduisant significativement le gaspillage de matières.</p>
+      <div class="exp-techs">
+        <span class="tag accent">Next.js</span><span class="tag">FastAPI</span><span class="tag">ML Algorithm</span>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+    <div class="project-card">
+      <div class="project-num">02</div>
+      <div class="project-title">Suite de tests automatisés</div>
+      <p class="project-desc">Infrastructure complète de tests end-to-end avec tableaux de bord Grafana pour le suivi des métriques qualité en temps réel et automatisation des workflows via n8n.</p>
+      <div class="exp-techs">
+        <span class="tag accent">Cypress</span><span class="tag">Grafana</span><span class="tag">n8n</span><span class="tag">GitLab CI</span>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+    <div class="project-card">
+      <div class="project-num">03</div>
+      <div class="project-title">Plateforme de gestion RH</div>
+      <p class="project-desc">Application fullstack de gestion des processus de recrutement — suivi des candidatures, planification d'entretiens et reporting — avec interface React et API REST.</p>
+      <div class="exp-techs">
+        <span class="tag accent">React.js</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+    <div class="project-card">
+      <div class="project-num">04</div>
+      <div class="project-title">Modules ERP métier</div>
+      <p class="project-desc">Développement de modules sur mesure sur la plateforme ERPNext/Frappe pour répondre aux besoins spécifiques de gestion d'entreprise.</p>
+      <div class="exp-techs">
+        <span class="tag accent">ERPNext</span><span class="tag">Python</span><span class="tag">JavaScript</span>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION & LANGUES -->
+<section id="education" style="padding:0">
+  <div class="edu-left">
+    <div class="section-label">Formation</div>
+    <h2 style="margin-bottom:40px">Parcours <em>académique</em></h2>
+    <div class="edu-items reveal">
+      <div class="edu-item">
+        <div class="edu-year">2024 — 2025</div>
+        <div class="edu-degree">Master Professionnel</div>
+        <div class="edu-school">Génie Logiciel et Base de Données<br>École Nationale d'Informatique, Fianarantsoa</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-year">2022 — 2023</div>
+        <div class="edu-degree">Licence Professionnelle</div>
+        <div class="edu-school">Génie Logiciel et Base de Données<br>École Nationale d'Informatique, Fianarantsoa</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-year">2018 — 2019</div>
+        <div class="edu-degree">Baccalauréat Scientifique — Série C</div>
+        <div class="edu-school">Lycée Saint François Xavier, Fianarantsoa</div>
+      </div>
+    </div>
+  </div>
+  <div class="edu-right">
+    <div class="section-label">Langues</div>
+    <h2 style="margin-bottom:40px"><em>Communication</em></h2>
+    <div class="lang-items reveal">
+      <div class="lang-item">
+        <div class="lang-name">Français</div>
+        <div class="lang-bar-bg"><div class="lang-bar" data-width="98" style="width:0%"></div></div>
+        <div class="lang-level">Langue maternelle — Excellent niveau oral &amp; écrit</div>
+      </div>
+      <div class="lang-item" style="margin-top:32px">
+        <div class="lang-name">Anglais</div>
+        <div class="lang-bar-bg"><div class="lang-bar" data-width="78" style="width:0%"></div></div>
+        <div class="lang-level">Professionnel — Excellent à l'écrit, bon à l'oral</div>
+      </div>
+      <div class="lang-item" style="margin-top:32px">
+        <div class="lang-name">Malgache</div>
+        <div class="lang-bar-bg"><div class="lang-bar" data-width="100" style="width:0%"></div></div>
+        <div class="lang-level">Langue maternelle</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label" style="justify-content:center;margin-bottom:24px">Contact</div>
+  <h2 style="margin-bottom:24px">Travaillons <em>ensemble</em></h2>
+  <p style="color:var(--muted);max-width:460px;margin:0 auto 40px;text-align:center;font-size:13px;line-height:1.8">
+    Je suis disponible pour des opportunités fullstack en CDI, CDD ou freelance — Madagascar ou remote.
+  </p>
+  <a class="contact-email" href="mailto:ornellaratsimbazafy@gmail.com">ornellaratsimbazafy@gmail.com</a>
+  <div class="social-links">
+    <a href="tel:+261385248443" class="social-link">📱 +261 38 52 484 43</a>
+    <a href="mailto:ornellaratsimbazafy@gmail.com" class="social-link">✉️ Email</a>
+    <a href="#" class="social-link">💼 LinkedIn</a>
+    <a href="#" class="social-link">🐙 GitHub</a>
+  </div>
+</section>
+
+<footer>
+  <span>Ornella Ratsimbazafy</span>
+  <span>Fullstack Engineer — Madagascar</span>
+  <span>© 2026</span>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const trail = document.getElementById('cursorTrail');
+  let mx = 0, my = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 6 + 'px';
+    cursor.style.top = my - 6 + 'px';
+    setTimeout(() => {
+      trail.style.left = mx - 16 + 'px';
+      trail.style.top = my - 16 + 'px';
+    }, 80);
+  });
+
+  document.querySelectorAll('a, button, .skill-card, .project-card, .exp-item').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Animate language bars
+        entry.target.querySelectorAll('.lang-bar').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Also trigger lang bars standalone
+  const langObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.width = entry.target.dataset.width + '%';
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.lang-bar').forEach(b => langObserver.observe(b));
+</script>
+</body>
+</html>
