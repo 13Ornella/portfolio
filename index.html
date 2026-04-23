@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ornella Ratsimbazafy — Fullstack Engineer</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a0f;
     --surface: #111118;
     --surface2: #1a1a24;
-    --accent: #c8f542;
+    --accent: #68314a;
     --accent2: #7b5cf0;
     --text: #e8e6f0;
     --muted: #6b6880;
@@ -188,12 +189,12 @@
   }
 
   .hero-code-card {
-    background: var(--surface);
+    background:none;
     border: 1px solid var(--border);
     border-radius: 2px;
     padding: 32px;
     width: 380px;
-    position: relative;
+    position: absolute;
     z-index: 2;
     animation: floatCard 4s ease-in-out infinite;
   }
@@ -565,7 +566,7 @@
   </div>
   <div class="hero-right">
     <div class="hero-bg-gfx"></div>
-    <div class="hero-code-card">
+ <!--<div class="hero-code-card">
       <div class="code-header">
         <div class="dot dot-r"></div>
         <div class="dot dot-y"></div>
@@ -584,8 +585,8 @@
       <div class="code-line"><span class="ln">10</span>&nbsp;&nbsp;<span class="punc">],</span></div>
       <div class="code-line"><span class="ln">11</span>&nbsp;&nbsp;<span style="color:#c8a0f0">open</span><span class="punc">:</span> <span class="fn">true</span> <span class="cm">// hiring!</span></div>
       <div class="code-line"><span class="ln">12</span><span class="punc">}</span></div>
-    </div>
-    <div class="hero-badge badge-1">⚡ <strong>4</strong> expériences pro</div>
+    </div>-->
+    <div class="hero-badge badge-1">  <strong>4</strong> expériences pro <img src="ornella.jpg" alt="Ornella"></div>
     <div class="hero-badge badge-2">🎓 <strong>Master II</strong> ENI</div>
   </div>
 </section>
@@ -596,7 +597,7 @@
   <h2>Ce que je <em>maîtrise</em></h2>
   <div class="skills-grid reveal">
     <div class="skill-card">
-      <span class="skill-icon">⚛️</span>
+      <span class="skill-icon"><i class=" fa-brands fa-js"></i></span>
       <div class="skill-title">Frontend</div>
       <p style="font-size:12px;color:var(--muted);line-height:1.6">Interfaces modernes, responsives et performantes avec les derniers outils du marché.</p>
       <div class="skill-tags">
@@ -608,7 +609,7 @@
       </div>
     </div>
     <div class="skill-card">
-      <span class="skill-icon">🖥️</span>
+      <span class="skill-icon"><i class="fa-solid fa-laptop-code"></i></span>
       <div class="skill-title">Backend</div>
       <p style="font-size:12px;color:var(--muted);line-height:1.6">APIs robustes, architectures scalables et logique métier solide.</p>
       <div class="skill-tags">
@@ -620,7 +621,7 @@
       </div>
     </div>
     <div class="skill-card">
-      <span class="skill-icon">🗄️</span>
+      <span class="skill-icon"><i class="fa-solid fa-database"></i></span>
       <div class="skill-title">Bases de données</div>
       <p style="font-size:12px;color:var(--muted);line-height:1.6">Conception et optimisation de bases relationnelles et NoSQL.</p>
       <div class="skill-tags">
@@ -630,7 +631,7 @@
       </div>
     </div>
     <div class="skill-card">
-      <span class="skill-icon">🧪</span>
+      <span class="skill-icon"><i class="fa-solid fa-vial"></i></span>
       <div class="skill-title">Tests &amp; QA</div>
       <p style="font-size:12px;color:var(--muted);line-height:1.6">Automatisation des tests, assurance qualité et intégration continue.</p>
       <div class="skill-tags">
@@ -641,7 +642,7 @@
       </div>
     </div>
     <div class="skill-card">
-      <span class="skill-icon">🛠️</span>
+      <span class="skill-icon"><i class="fa-solid fa-tools"></i></span>
       <div class="skill-title">Outils &amp; Méthodes</div>
       <p style="font-size:12px;color:var(--muted);line-height:1.6">Workflow collaboratif, conception et gestion de projet.</p>
       <div class="skill-tags">
@@ -653,7 +654,7 @@
       </div>
     </div>
     <div class="skill-card">
-      <span class="skill-icon">🤖</span>
+      <span class="skill-icon"><i class="fa-solid fa-code"></i></span>
       <div class="skill-title">Langages</div>
       <p style="font-size:12px;color:var(--muted);line-height:1.6">Polyvalence technique sur les langages les plus demandés.</p>
       <div class="skill-tags">
@@ -825,10 +826,10 @@
   </p>
   <a class="contact-email" href="mailto:ornellaratsimbazafy@gmail.com">ornellaratsimbazafy@gmail.com</a>
   <div class="social-links">
-    <a href="tel:+261385248443" class="social-link">📱 +261 38 52 484 43</a>
-    <a href="mailto:ornellaratsimbazafy@gmail.com" class="social-link">✉️ Email</a>
-    <a href="#" class="social-link">💼 LinkedIn</a>
-    <a href="#" class="social-link">🐙 GitHub</a>
+    <a href="tel:+261385248443" class="social-link"><i class="fa-solid fa-phone"></i> +261 38 52 484 43</a>
+    <a href="mailto:ornellaratsimbazafy@gmail.com" class="social-link"><i class="fa-solid fa-envelope"></i> Email</a>
+    <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+    <a href="#" class="social-link"><i class="fa-brands fa-github"></i> GitHub</a>
   </div>
 </section>
 
