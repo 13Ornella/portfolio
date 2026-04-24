@@ -59,10 +59,13 @@
   body::before {
     content: '';
     position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(123,92,240,0.16), transparent 26%),
+      radial-gradient(circle at 80% 18%, rgba(200,245,66,0.10), transparent 20%),
+      linear-gradient(180deg, rgba(255,255,255,0.04), transparent 35%, rgba(10,10,15,0.18));
     pointer-events: none;
     z-index: 10000;
-    opacity: 0.35;
+    opacity: 0.45;
   }
 
   /* NAV */
@@ -828,8 +831,8 @@
   <div class="social-links">
     <a href="tel:+261385248443" class="social-link"><i class="fa-solid fa-phone"></i> +261 38 52 484 43</a>
     <a href="mailto:ornellaratsimbazafy@gmail.com" class="social-link"><i class="fa-solid fa-envelope"></i> Email</a>
-    <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
-    <a href="#" class="social-link"><i class="fa-brands fa-github"></i> GitHub</a>
+    <a href="https://www.linkedin.com/in/ornella-ratsimbazafy-78b668283" class="social-link"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+    <a href="https://github.com/13Ornella" class="social-link"><i class="fa-brands fa-github"></i> GitHub</a>
   </div>
 </section>
 
