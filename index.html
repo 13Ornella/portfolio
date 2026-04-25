@@ -92,6 +92,27 @@
     transition: color 0.2s;
   }
   .nav-links a:hover { color: var(--accent); }
+  
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 24px;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .menu-toggle span {
+    width: 24px;
+    height: 2px;
+    background: var(--text);
+    transition: all 0.3s ease;
+    display: block;
+  }
+  .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(10px, 10px); }
+  .menu-toggle.active span:nth-child(2) { opacity: 0; }
+  .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
 
   /* HERO */
   #hero {
@@ -520,15 +541,187 @@
 
   @media (max-width: 900px) {
     nav { padding: 20px 24px; }
-    #hero { grid-template-columns: 1fr; }
+    .menu-toggle { display: flex; }
+    .nav-links { 
+      display: none;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      gap: 0;
+      padding: 16px 24px;
+      list-style: none;
+    }
+    .nav-links.active { display: flex; }
+    .nav-links li { border-bottom: 1px solid var(--border); padding: 12px 0; }
+    .nav-links li:last-child { border-bottom: none; }
+    .nav-links a { font-size: 13px; }
+    
+    #hero { grid-template-columns: 1fr; padding-top: 80px; }
     .hero-right { display: none; }
-    .hero-left { padding: 120px 24px 80px; }
-    section { padding: 80px 24px; }
-    .exp-item { grid-template-columns: 1fr; gap: 16px; }
-    #education { grid-template-columns: 1fr; }
+    .hero-left { padding: 80px 24px 60px; }
+    .hero-tag { font-size: 10px; }
+    h1 { font-size: clamp(36px, 5vw, 56px); }
+    .hero-subtitle { font-size: clamp(16px, 2vw, 20px); }
+    .hero-desc { max-width: 100%; }
+    .hero-ctas { flex-wrap: wrap; }
+    .scroll-hint { bottom: 20px; left: 24px; font-size: 10px; }
+    
+    section { padding: 60px 24px; }
+    h2 { font-size: clamp(28px, 3vw, 40px); margin-bottom: 40px; }
+    
+    .skills-grid { grid-template-columns: 1fr; }
+    
+    .exp-item { 
+      grid-template-columns: 1fr; 
+      gap: 16px;
+      padding: 24px;
+    }
+    .exp-meta { padding-top: 0; }
+    
+    .projects-grid { grid-template-columns: 1fr; gap: 16px; }
+    
+    #education { grid-template-columns: 1fr; padding: 0; }
     .edu-left, .edu-right { padding: 60px 24px; }
-    footer { flex-direction: column; gap: 8px; text-align: center; }
-    .nav-links { display: none; }
+    
+    #contact { padding: 60px 24px; }
+    #contact::before { width: 300px; height: 300px; }
+    .contact-email { font-size: clamp(16px, 2.5vw, 28px); }
+    
+    .social-links { 
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .social-link {
+      flex: 1;
+      min-width: 120px;
+      justify-content: center;
+      font-size: 11px;
+      padding: 10px 12px;
+    }
+    
+    footer { 
+      flex-direction: column; 
+      gap: 8px; 
+      text-align: center;
+      padding: 20px 24px;
+      font-size: 10px;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    nav { padding: 16px 16px; }
+    .nav-logo { font-size: 16px; }
+    
+    #hero { padding-top: 60px; }
+    .hero-left { padding: 60px 16px 40px; }
+    h1 { font-size: clamp(28px, 4vw, 42px); }
+    .hero-subtitle { font-size: clamp(14px, 1.8vw, 18px); }
+    .hero-desc { font-size: 12px; margin-bottom: 32px; }
+    .btn-primary, .btn-outline { 
+      padding: 12px 20px;
+      font-size: 12px;
+      width: 100%;
+    }
+    .hero-ctas { flex-direction: column; }
+    .scroll-hint { display: none; }
+    
+    section { padding: 40px 16px; }
+    .section-label { font-size: 10px; }
+    h2 { font-size: clamp(24px, 2.5vw, 32px); margin-bottom: 30px; }
+    
+    .skill-card { padding: 24px 16px; }
+    .skill-icon { font-size: 24px; }
+    .skill-title { font-size: 14px; }
+    
+    .exp-item {
+      padding: 16px;
+      gap: 12px;
+    }
+    .exp-role { font-size: 15px; }
+    .exp-desc { font-size: 12px; }
+    
+    .project-card { padding: 20px 16px; }
+    .project-num { font-size: 10px; }
+    .project-title { font-size: 18px; }
+    .project-desc { font-size: 12px; }
+    .project-arrow { font-size: 16px; top: 16px; right: 16px; }
+    
+    .edu-left, .edu-right { padding: 40px 16px; }
+    h2 { margin-bottom: 24px; }
+    .edu-items { gap: 24px; }
+    .lang-items { gap: 20px; }
+    
+    #contact { padding: 40px 16px; }
+    #contact::before { width: 200px; height: 200px; }
+    .contact-email { font-size: clamp(14px, 2vw, 22px); margin-bottom: 32px; }
+    
+    .social-links { gap: 8px; }
+    .social-link {
+      font-size: 10px;
+      padding: 8px 10px;
+      gap: 6px;
+    }
+    .social-link i { font-size: 12px; }
+  }
+  
+  @media (max-width: 480px) {
+    nav { padding: 14px 12px; }
+    .nav-logo { font-size: 14px; }
+    
+    .hero-left { padding: 40px 12px 30px; }
+    h1 { font-size: clamp(24px, 3.5vw, 36px); margin-bottom: 4px; }
+    .hero-subtitle { font-size: clamp(12px, 1.5vw, 16px); margin-bottom: 16px; }
+    .hero-desc { font-size: 11px; margin-bottom: 24px; line-height: 1.6; }
+    .hero-tag { font-size: 9px; gap: 8px; margin-bottom: 16px; }
+    .hero-tag::before { width: 20px; }
+    
+    .btn-primary, .btn-outline { 
+      padding: 10px 16px;
+      font-size: 11px;
+    }
+    
+    section { padding: 32px 12px; }
+    h2 { font-size: clamp(20px, 2vw, 28px); margin-bottom: 20px; }
+    .section-label { font-size: 9px; }
+    
+    .skill-card { padding: 16px 12px; }
+    .skill-icon { font-size: 20px; margin-bottom: 12px; }
+    .skill-title { font-size: 13px; }
+    .tag { font-size: 9px; padding: 3px 8px; }
+    
+    .exp-item { padding: 12px; }
+    .exp-meta { margin-bottom: 8px; }
+    .exp-date { font-size: 10px; }
+    .exp-company { font-size: 11px; }
+    .exp-role { font-size: 13px; margin-bottom: 8px; }
+    .exp-desc { font-size: 11px; }
+    
+    .project-card { padding: 16px 12px; }
+    .project-title { font-size: 16px; }
+    .project-desc { font-size: 11px; }
+    .project-arrow { font-size: 14px; }
+    
+    .edu-left, .edu-right { padding: 32px 12px; }
+    .edu-items { gap: 16px; }
+    .edu-degree { font-size: 14px; }
+    .edu-school { font-size: 11px; }
+    .lang-items { gap: 16px; }
+    .lang-name { font-size: 14px; margin-bottom: 6px; }
+    
+    #contact { padding: 32px 12px; }
+    #contact::before { width: 150px; height: 150px; }
+    .contact-email { font-size: clamp(12px, 1.8vw, 18px); }
+    p { font-size: 11px !important; }
+    
+    .social-links { gap: 6px; margin-top: 24px; }
+    .social-link { font-size: 9px; padding: 6px 8px; }
+    
+    footer { padding: 16px 12px; font-size: 9px; }
   }
 </style>
 </head>
@@ -540,7 +733,12 @@
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="#hero">OR.</a>
-  <ul class="nav-links">
+  <button class="menu-toggle" id="menuToggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
     <li><a href="#skills">Compétences</a></li>
     <li><a href="#experience">Expériences</a></li>
     <li><a href="#projects">Projets</a></li>
@@ -843,6 +1041,31 @@
 </footer>
 
 <script>
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  
+  menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+  
+  // Close menu when a link is clicked
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      menuToggle.classList.remove('active');
+      navLinks.classList.remove('active');
+    });
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('nav')) {
+      menuToggle.classList.remove('active');
+      navLinks.classList.remove('active');
+    }
+  });
+
   // Custom cursor
   const cursor = document.getElementById('cursor');
   const trail = document.getElementById('cursorTrail');
